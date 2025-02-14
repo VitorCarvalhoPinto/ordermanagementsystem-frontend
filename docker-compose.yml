@@ -1,0 +1,16 @@
+services:
+  frontend:
+    image: frontend-nextjs
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - OrderManagementSystem-network
+    environment:
+      - NODE_ENV=production
+
+networks:
+  OrderManagementSystem-network:
+    external: true
