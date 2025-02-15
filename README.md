@@ -1,40 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Order Management System Frond End
 
-## Getting Started
+Este é o projeto Order Management System, uma aplicação em ReactJs que utiliza tailwind como framework de estilização. Este documento fornece instruções sobre como configurar e executar o projeto localmente usando Docker.
 
-First, run the development server:
+## Pré-requisitos
+
+- [Docker](https://www.docker.com/get-started) instalado em sua máquina.
+- [Docker Compose](https://docs.docker.com/compose/install/) instalado.
+- [Node](https://nodejs.org/pt/download) Instalado.
+- OrderManagementSystem (backend) clonado e com as configurações corretas, além de executar o seguinte comando:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker network create OrderManagementSystem-network
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configuração
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+1. Clone o repositório para sua máquina local:
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+```bash
+git clone https://github.com/VitorCarvalhoPinto/ordermanagementsystem-frontend.git
+cd ordermanagementsystem-frontend
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+2. Certifique-se de que o arquivo `docker-compose.yml` está configurado corretamente.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Será necessário configurar suas secrets no projeto OrderManagementSystem, seguindo este modelo:
 
-## Learn More
+## Executando o Projeto
 
-To learn more about Next.js, take a look at the following resources:
+1. No diretório raiz do projeto, execute o seguinte comando para iniciar os contêineres Docker:
+docker-compose up --build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+2. O Docker Compose irá construir as imagens e iniciar os contêineres. O serviço da aplicação estará disponível na porta `3000`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Acessando a Aplicação
 
-## Deploy on Vercel
+- A aplicação estará disponível em `http://localhost:3000`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Parando os Contêineres
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+Para parar e remover os contêineres, execute: docker-compose down
+
+## Contribuição
+
+Se você deseja contribuir com este projeto, por favor, faça um fork do repositório e envie um pull request com suas alterações.
