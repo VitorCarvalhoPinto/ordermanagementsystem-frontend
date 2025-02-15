@@ -2,24 +2,25 @@ import api from "./axios"
 
 
 export const getOrder = async () => {
-    try{
+    try {
         const response = await api.get("order");
-        return response.data;
+        return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
         console.error(error);
+        return [];
     }
-}
-
+};
 
 export const getOrderById = async (orderId) => {
-    try{
+    try {
         const response = await api.get(`order/${orderId}`);
-        if (response.data === undefined) return null;
+        console.log(response.data)
         return response.data;
     } catch (error) {
         console.error(error);
+        return [];
     }
-}
+};
 
 export const PostOrder = async (order) => {
     try {

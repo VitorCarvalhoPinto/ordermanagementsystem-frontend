@@ -1,10 +1,25 @@
-import TextInput from "./TextInput";
-import { handleInputChange } from "@/functions/handleInputChange";
-import { PostOrder } from "@/services/OrderService";
 import { useState } from "react";
 
-const OrderCreateModal = ({ isOpen, closeModal, formData, setFormData }) => {
+import Button from "./Button";
+
+import { handleInputChange } from "@/functions/handleInputChange";
+
+import TextInput from "./TextInput";
+import serviceHandler from "@/functions/serviceHandler";
+
+import { PostOrder } from "@/services/OrderService";
+import { getOrder} from "@/services/OrderService";
+
+const OrderCreateModal = ({ isOpen, closeModal, setOrder }) => {
     if (!isOpen) return null;
+
+    const [formData, setFormData] = useState({
+      cliente: "",
+      produto: "",
+      valor: "",
+      status: "Pendente",
+      dataCriacao: new Date(),
+    });
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -22,6 +37,7 @@ const OrderCreateModal = ({ isOpen, closeModal, formData, setFormData }) => {
             status: "Pendente",
             dataCriacao: new Date(),
           }); 
+          serviceHandler(getOrder, setOrder);
           closeModal();
         } catch (err) {
           setError('Erro ao criar o pedido. Tente novamente mais tarde.');
@@ -62,20 +78,19 @@ const OrderCreateModal = ({ isOpen, closeModal, formData, setFormData }) => {
           />
   
           <div className="mt-4 flex justify-between">
-            <button
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-              onClick={closeModal}
-              disabled={loading}
-            >
-              Cancelar
-            </button>
-            <button
+            <Button
+              text={loading ? 'Carregando...' : 'Adicionar'}
+              onClickFunction={() => handleSubmit (formData)}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              onClick={() => handleSubmit (formData)}
               disabled={loading}
-            >
-              {loading ? 'Carregando...' : 'Adicionar'}
-            </button>
+            />
+
+            <Button
+              text={"Cancelar"}
+              onClickFunction={closeModal}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              disabled={loading}
+            />
           </div>
         </div>
       </div>

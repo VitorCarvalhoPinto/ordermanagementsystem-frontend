@@ -1,40 +1,84 @@
+import { useState, useEffect } from 'react';
+
 import OrderTable from "@/Components/OrderTable";
 import OrderCreateModal from '@/Components/OrderCreateModal';
-import { useState } from 'react';
+import TextInput from "@/Components/TextInput";
+import Button from '@/Components/Button';
+
+import { handleInputChange } from "@/functions/handleInputChange";
+import serviceHandler from "@/functions/serviceHandler";
+
+import { getOrder, getOrderById } from "@/services/OrderService";
 
 export default function Home() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-    
-  const [formData, setFormData] = useState({
-      cliente: "",
-      produto: "",
-      valor: "",
-      status: "Pendente",
-      dataCriacao: new Date(),
+  const [order, setOrder] = useState([]);
+
+  const [filterData, setFilterData] = useState({
+    filter: ""
   });
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const getAllOrder = async () => serviceHandler(getOrder, setOrder);
+
+  const getOrdersById = async (id) => serviceHandler(() => getOrderById(id), setOrder);
+  
+  const handleClear = () => {
+    setFilterData({ filter: "" });
+    getAllOrder();
+  }
+  
+  useEffect(() => {
+    getAllOrder();
+  }, []);
+
+    console.log(order)
+
   return (
     <div>
 
-      <button
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mb-4"
-          onClick={openModal}
-      >
-          Adicionar Pedido
-      </button>
-
-      <OrderCreateModal
-          isOpen={isModalOpen}
-          closeModal={closeModal}
-          formData={formData}
-          setFormData={setFormData}
+      <Button
+        text={"Adicionar"}
+        onClickFunction={openModal}
+        className="absolute top-0 right-0 mt-4 mr-4 flex items-center justify-center bg-green-500 hover:bg-green-600 mb-4"
       />
 
-      <OrderTable/>
+      <TextInput
+          name="filter"
+          value={filterData.filter}
+          onChange={handleInputChange(setFilterData)}
+          type="text"
+          label="ID"
+      />
+
+      <div className="flex space-x-4">
+        <Button
+          text={"Pesquisar"}
+          onClickFunction={() => getOrdersById(filterData.filter)}
+          className={"bg-blue-500 hover:bg-blue-600"}
+        />
+
+        <Button
+          text={"Limpar"}
+          onClickFunction={handleClear}
+          className={"bg-gray-500 hover:bg-gray-600"}
+        />
+      </div>
+
+      <OrderTable 
+        getAllOrder={getAllOrder} 
+        order={order}
+      />
+
+      <OrderCreateModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        setOrder={setOrder}
+      />
+
     </div>
   );
 }
